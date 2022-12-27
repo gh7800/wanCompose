@@ -1,4 +1,4 @@
-package cn.shineiot.wancompose.ui.bean
+package cn.shineiot.wancompose.bean
 
 /**
  * @Description

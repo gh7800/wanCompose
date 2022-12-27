@@ -5,13 +5,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,24 +21,65 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import cn.shineiot.wancompose.ui.bean.Message
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import cn.shineiot.wancompose.RouteConfig.ROUTE_LOGIN
+import cn.shineiot.wancompose.RouteConfig.ROUTE_MAIN
+import cn.shineiot.wancompose.bean.Message
+import cn.shineiot.wancompose.route.NavUtil
+import cn.shineiot.wancompose.route.composableX
+import cn.shineiot.wancompose.ui.login.LoginPage
+import cn.shineiot.wancompose.ui.main.MainPage
 import cn.shineiot.wancompose.ui.theme.WanComposeTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            NavContent()
+
+            /*
             WanComposeTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    Greeting(Message("JAVA", "Kotlin"))
+                Surface {
+                    NavUtil()
+                    //Greeting(Message("JAVA", "Kotlin"))
                 }
-            }
+            }*/
         }
     }
 }
 
+@Composable
+fun NavContent(){
+    val navController = rememberNavController()
+
+    //初始化工具类
+    NavUtil.get().init(navController)
+
+    NavHost(navController = navController, startDestination = ROUTE_LOGIN){
+        composableX(ROUTE_LOGIN){ LoginPage() }
+        composableX(ROUTE_MAIN){ MainPage() }
+
+    }
+}
+
 /**
+ * pages
+ */
+object RouteConfig {
+    const val ROUTE_LOGIN = "login"
+    const val ROUTE_MAIN = "main"
+}
+
+
+
+
+
+/**
+ *
+ * --------------------------------------------------------------------------------------------------------------------------------------------
  * TopAppBar
  */
 @Composable
@@ -72,6 +114,9 @@ fun Greeting(msg: Message) {
     WanComposeTheme() {
         Surface(modifier = Modifier.fillMaxSize()) {
             Column {
+                /*var name = remember {
+                    mutableListOf<String>()
+                }*/
                 SetTopAppBar()
 
                 Row(modifier = Modifier.padding(5.dp)) {
@@ -88,17 +133,27 @@ fun Greeting(msg: Message) {
                     Column() {
                         Text(
                             text = msg.msg,
-                            color = MaterialTheme.colors.secondaryVariant,
+                            color = MaterialTheme.colors.primary,
                             style = MaterialTheme.typography.subtitle1,
+                            modifier = Modifier.selectable(
+                                selected = true,
+                                onClick = {}
+                            )
                         )
                         Text(
                             text = msg.title,
                             modifier = Modifier
                                 .padding(5.dp)
                                 .fillMaxWidth(1f),
-                            style = MaterialTheme.typography.body2,
+                            style = MaterialTheme.typography.body1,
                             textAlign = TextAlign.Center,
                         )
+                        Button(
+                            onClick = {},
+                            modifier = Modifier.padding(5.dp),
+                        ) {
+                            Text(text = "Button")
+                        }
                     }
                 }
             }
