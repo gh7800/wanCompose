@@ -14,6 +14,7 @@ val dp5 = 5.dp
 val dp8 = 8.dp
 val dp10 = 10.dp
 val dp15 = 15.dp
+val dp16 = 16.dp
 val dp20 = 20.dp
 val dp25 = 25.dp
 val dp30 = 30.dp
@@ -23,6 +24,9 @@ val dp60 = 60.dp
 val dp70 = 70.dp
 val dp80 = 80.dp
 val dp100 = 100.dp
+val dp150 = 150.dp
+val dp200 = 200.dp
+val dp300 = 300.dp
 
 
 val sp12 = 12.sp
