@@ -21,6 +21,7 @@ import cn.shineiot.wancompose.ui.theme.*
 /**
  * main
  */
+@Preview
 @Composable
 fun MainPage() {
     Scaffold(
@@ -74,8 +75,3 @@ fun MainPage() {
 
 }
 
-@Preview
-@Composable
-fun MainPageView() {
-    MainPage()
-}
