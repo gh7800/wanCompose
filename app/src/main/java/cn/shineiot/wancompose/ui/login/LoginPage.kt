@@ -21,6 +21,7 @@ import cn.shineiot.wancompose.ui.theme.*
 @Preview
 @Composable
 fun LoginPage() {
+
     Column(
         modifier = Modifier
             .fillMaxSize(1f)
@@ -44,7 +45,7 @@ fun LoginPage() {
             onValueChange = {
                 username = it
             },
-            label = { Text(text = "请输入用户名")},
+            label = { Text(text = "请输入用户名") },
             singleLine = true
         )
 
@@ -55,7 +56,7 @@ fun LoginPage() {
             },
             modifier = Modifier.padding(top = dp10),
             placeholder = { Text(text = "请输入密码..") },
-            label = { Text(text = "请输入密码")},
+            label = { Text(text = "请输入密码") },
             singleLine = true,
             keyboardActions = KeyboardActions(onDone = {
                 NavUtil.get().navigation(RouteConfig.ROUTE_MAIN)
@@ -65,12 +66,16 @@ fun LoginPage() {
         )
 
         Button(
-            onClick = { NavUtil.get().navigation(RouteConfig.ROUTE_MAIN) },
+            onClick = {
+                NavUtil.get().navigation(RouteConfig.ROUTE_MAIN)
+            },
             Modifier.padding(top = dp20)
         ) {
             Text(
                 text = "登录",
-                Modifier.padding(start = dp50, end = dp50).width(dp40),
+                Modifier
+                    .padding(start = dp50, end = dp50)
+                    .width(dp40),
                 fontSize = sp18
             )
         }

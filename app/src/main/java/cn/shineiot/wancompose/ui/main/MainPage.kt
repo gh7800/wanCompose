@@ -33,7 +33,7 @@ fun MainPage() {
                 .background(color = F2)
                 .fillMaxSize(1f)) {
 
-            val (txt,txt2) = createRefs()//constraintLayout 需要先声明组件
+            val (txt,txt2) = createRefs()//ConstraintLayout 需要先声明组件
 
             Text(text = "main", modifier = Modifier
                 .selectable(
