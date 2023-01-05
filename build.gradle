@@ -4,6 +4,9 @@ buildscript {
         compose_version = '1.0.1'
         nav_version = '2.5.3'
         constraintlayout_compose = '1.0.1'
+        hiltVersion = "2.38.1"
+        hiltCompilerVersion = "1.0.0"
+        hiltComposeVersion = "1.0.0-alpha03"
     }
     repositories {
         google()
@@ -12,6 +15,8 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:7.0.2"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:2.38.1"
+        //classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.4.1"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
