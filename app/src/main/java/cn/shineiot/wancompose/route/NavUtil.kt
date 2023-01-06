@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.*
 import androidx.navigation.compose.ComposeNavigator
+import cn.shineiot.wancompose.utils.LogUtil
 
 /**
  * author:Xcy
@@ -37,7 +38,7 @@ const val NavUtilTAG = "NavUtilTAG"
 
 class NavUtil private constructor() {
 
-    private lateinit var navHostController: NavHostController
+    lateinit var navHostController: NavHostController
     private var baseRouteInfo = HashMap<String, List<NavParam>>()
 
     companion object {
@@ -165,6 +166,12 @@ class NavUtil private constructor() {
             }
             Log.e(NavUtilTAG, "[baseRoute=${baseRoute} 需要传递:${sb}]")
         }
+    }
+
+    //出栈
+    fun onBack(){
+        val result = navHostController.popBackStack()
+        LogUtil.e(result)
     }
 }
 

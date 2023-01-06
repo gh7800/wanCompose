@@ -1,41 +1,47 @@
 package cn.shineiot.wancompose.ui.login
 
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import cn.shineiot.wancompose.RouteConfig
 import cn.shineiot.wancompose.route.NavUtil
 import cn.shineiot.wancompose.ui.theme.*
 import cn.shineiot.wancompose.utils.LogUtil
-import javax.inject.Inject
 
 /**
  * login
  */
 @Composable
 fun LoginPage(
-    viewModel: LoginViewModel = hiltViewModel(),
-    viewState : LoginState = viewModel.viewStates
+    navController: NavController,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
+    val viewState: LoginState = viewModel.viewStates
     val scaffoldState: ScaffoldState = rememberScaffoldState()
 
     LaunchedEffect(Unit) {
         viewModel.viewEvents.collect {
-            when(it){
+            when (it) {
                 is LoginEvent.Loading -> {
                     scaffoldState.snackbarHostState.showSnackbar("loading")
                 }
@@ -44,21 +50,61 @@ fun LoginPage(
                 }
                 is LoginEvent.Success -> {
                     scaffoldState.snackbarHostState.showSnackbar("success")
+
+                    NavUtil.get().navigation(RouteConfig.ROUTE_MAIN)
                 }
             }
         }
     }
 
+    val callback = remember {
+        object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                navController.popBackStack()
+            }
+        }
+    }
+    val dispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    /*DisposableEffect(key1 = Unit, effect = {
+        dispatcher?.addCallback(callback)
+        onDispose {
+            callback.remove()
+        }
+    })*/
+
+    BackHandler(enabled = true) {
+        LogUtil.e("backHandler")
+    }
+
     Scaffold(
         scaffoldState = scaffoldState,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Login",
+                        textAlign = TextAlign.Left,
+                        modifier = Modifier.fillMaxWidth(1f),
+                        color = BLACk
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navController.popBackStack()
+                    }) {
+                        Icon(Icons.Filled.ArrowBack, contentDescription = "", tint = Color.Black)
+                    }
+                },
+                backgroundColor = Color.White,
+            )
+        },
         content = {
             Column(
                 modifier = Modifier
                     .fillMaxSize(1f)
-                    .background(F2)
-                    .padding(start = dp10, end = dp20),
+                    .background(WRITE),
                 verticalArrangement = Arrangement.Center, //垂直居中
-                horizontalAlignment = Alignment.CenterHorizontally //水平居中
+                horizontalAlignment = Alignment.CenterHorizontally, //水平居中
             ) {
 
                 OutlinedTextField( //输入框样式
@@ -91,7 +137,6 @@ fun LoginPage(
                     onClick = {
                         viewModel.dispatch(LoginAction.Login)
 
-                        //NavUtil.get().navigation(RouteConfig.ROUTE_MAIN)
                     },
                     Modifier.padding(top = dp20)
                 ) {
@@ -104,12 +149,35 @@ fun LoginPage(
                     )
                 }
             }
-        })
+        }
+    )
+
+    @Composable
+    fun SetTopAppBar() {
+        TopAppBar(
+            title = {
+                Text(
+                    text = "这是标题123",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth(1f)
+                )
+            },
+            navigationIcon = {
+                IconButton(onClick = {}) {
+                    Icon(Icons.Filled.ArrowBack, contentDescription = "", tint = Color.White)
+                }
+            },
+            actions = {
+                IconButton(onClick = { }) {
+                    Icon(Icons.Filled.Share, contentDescription = "分享")
+                }
+                IconButton(onClick = { }) {
+                    Icon(Icons.Filled.Settings, contentDescription = "设置")
+                }
+            }
+        )
+    }
+
 }
 
-@Preview
-@Composable
-fun LoginPageView() {
-    LoginPage()
-}
 

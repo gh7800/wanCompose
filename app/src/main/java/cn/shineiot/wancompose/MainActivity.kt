@@ -53,7 +53,7 @@ fun NavContent(){
     NavUtil.get().init(navController)
 
     NavHost(navController = navController, startDestination = ROUTE_LOGIN){
-        composableX(ROUTE_LOGIN){ LoginPage() }
+        composableX(ROUTE_LOGIN){ LoginPage(navController) }
         composableX(ROUTE_MAIN){ MainPage() }
 
     }
