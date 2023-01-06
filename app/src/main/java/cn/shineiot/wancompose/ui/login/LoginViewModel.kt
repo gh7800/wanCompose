@@ -1,14 +1,12 @@
 package cn.shineiot.wancompose.ui.login
 
-import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cn.shineiot.wancompose.utils.LogUtil
+import cn.shineiot.wancompose.net.RetrofitClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,7 +16,7 @@ import javax.inject.Inject
  * @Date : 2023/1/3
  */
 @HiltViewModel
-class LoginViewModel @Inject constructor(): ViewModel() {
+class LoginViewModel @Inject constructor() : ViewModel() {
     var viewStates by mutableStateOf(LoginState())
         private set
 
@@ -30,16 +28,15 @@ class LoginViewModel @Inject constructor(): ViewModel() {
         when (action) {
             is LoginAction.Login -> login()
             is LoginAction.UpdateUserName -> updateUserName(action.username)
-            is LoginAction.UpdatePassWord ->updatePassWord(action.password)
+            is LoginAction.UpdatePassWord -> updatePassWord(action.password)
         }
     }
 
-    private fun updateUserName(username: String){
+    private fun updateUserName(username: String) {
         viewStates = viewStates.copy(username = username)
-        LogUtil.e("$viewStates")
     }
 
-    private fun updatePassWord(password: String){
+    private fun updatePassWord(password: String) {
         viewStates = viewStates.copy(password = password)
     }
 
@@ -48,10 +45,25 @@ class LoginViewModel @Inject constructor(): ViewModel() {
         viewModelScope.launch {
             when {
                 viewStates.username.isEmpty() -> loginChannel.send(LoginEvent.Error("请输入账号"))
-                viewStates.password.isEmpty() -> loginChannel.send(LoginEvent.Error("请输入账号"))
+                viewStates.password.isEmpty() -> loginChannel.send(LoginEvent.Error("请输入密码"))
                 else -> {
                     viewModelScope.launch {
-                        Log.e("tag", "$viewStates")
+                        flow {
+                            val result = RetrofitClient.httpService.login(
+                                viewStates.username,
+                                viewStates.password
+                            )
+                            emit(result)
+                        }.map {
+                            if (it.errorCode == 0) {
+                                loginChannel.send(LoginEvent.Success)
+                            } else {
+                                throw Exception(it.errorMsg)
+                            }
+                        }.catch {
+                            loginChannel.send(LoginEvent.Error(it.message))
+                        }.collect()
+
                     }
                 }
             }
@@ -73,7 +85,9 @@ data class LoginState(
  * 一次性事件
  */
 sealed class LoginEvent() {
-    data class Error(var msg: String) : LoginEvent()
+    object Loading : LoginEvent()
+    object Success : LoginEvent()
+    data class Error(var msg: String?) : LoginEvent()
 }
 
 /**
@@ -81,6 +95,6 @@ sealed class LoginEvent() {
  */
 sealed class LoginAction {
     object Login : LoginAction()
-    data class UpdateUserName(val username : String) : LoginAction()
-    data class UpdatePassWord(val password : String) : LoginAction()
+    data class UpdateUserName(val username: String) : LoginAction()
+    data class UpdatePassWord(val password: String) : LoginAction()
 }

@@ -32,22 +32,15 @@ import cn.shineiot.wancompose.route.composableX
 import cn.shineiot.wancompose.ui.login.LoginPage
 import cn.shineiot.wancompose.ui.main.MainPage
 import cn.shineiot.wancompose.ui.theme.WanComposeTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             NavContent()
-
-            /*
-            WanComposeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface {
-                    NavUtil()
-                    //Greeting(Message("JAVA", "Kotlin"))
-                }
-            }*/
         }
     }
 }

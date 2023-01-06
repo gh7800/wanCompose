@@ -59,7 +59,7 @@ class NavUtil private constructor() {
      */
     fun bindParam(baseRoute: String, params: List<NavParam>) {
         baseRouteInfo[baseRoute] = params
-        Log.d(NavUtilTAG, "路由:${baseRoute} 参数:${params}")
+        Log.e(NavUtilTAG, "路由:${baseRoute} 参数:${params}")
     }
 
     /**
@@ -92,7 +92,7 @@ class NavUtil private constructor() {
                     if (params.containsKey(navParam.key)) {
                         newRoute.append(params[navParam.key])
                     } else {
-                        Log.d(
+                        Log.e(
                             NavUtilTAG,
                             "navigation error(route:${baseRoute}  ${navParam.key}为${navParam.isRequired}参数)"
                         )
@@ -114,7 +114,7 @@ class NavUtil private constructor() {
                 printRequiredParam(baseRoute = baseRoute)
             }
         }
-        Log.d(NavUtilTAG, "转换后的路由:${newRoute}")
+        Log.e(NavUtilTAG, "转换后的路由:${newRoute}")
         try {
             navHostController.navigate(newRoute.toString())
         } catch (e: Exception) {
@@ -163,7 +163,7 @@ class NavUtil private constructor() {
                     }
                 }
             }
-            Log.d(NavUtilTAG, "[baseRoute=${baseRoute} 需要传递:${sb}]")
+            Log.e(NavUtilTAG, "[baseRoute=${baseRoute} 需要传递:${sb}]")
         }
     }
 }
@@ -212,8 +212,8 @@ fun NavGraphBuilder.composableX(
         }
     )
 
-    Log.d(NavUtilTAG, "拼接的路由:${newRoute}")
-    Log.d(NavUtilTAG, "参数:${params}")
+    //Log.e(NavUtilTAG, "拼接的路由:${newRoute}")
+    //Log.e(NavUtilTAG, "参数:${params}")
 }
 
 /**

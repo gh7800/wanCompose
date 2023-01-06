@@ -12,9 +12,11 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import cn.shineiot.wancompose.RouteConfig
 import cn.shineiot.wancompose.route.NavUtil
 import cn.shineiot.wancompose.ui.theme.*
@@ -26,19 +28,23 @@ import javax.inject.Inject
  */
 @Composable
 fun LoginPage(
-    viewModel: LoginViewModel = LoginViewModel()
+    viewModel: LoginViewModel = hiltViewModel(),
+    viewState : LoginState = viewModel.viewStates
 ) {
-    
-    val viewState = viewModel.viewStates
-
     val scaffoldState: ScaffoldState = rememberScaffoldState()
 
     LaunchedEffect(Unit) {
         viewModel.viewEvents.collect {
-            if (it is LoginEvent.Error) {
-                LogUtil.e("error--${it.msg}")
-
-                scaffoldState.snackbarHostState.showSnackbar(message = it.msg)
+            when(it){
+                is LoginEvent.Loading -> {
+                    scaffoldState.snackbarHostState.showSnackbar("loading")
+                }
+                is LoginEvent.Error -> {
+                    it.msg?.let { it1 -> scaffoldState.snackbarHostState.showSnackbar(message = it1) }
+                }
+                is LoginEvent.Success -> {
+                    scaffoldState.snackbarHostState.showSnackbar("success")
+                }
             }
         }
     }
@@ -57,7 +63,7 @@ fun LoginPage(
 
                 OutlinedTextField( //输入框样式
                     value = viewState.username,
-                    placeholder = { Text(text = "请输入用户名..") },
+                    placeholder = { Text(text = "请输入用户名..", color = Color.Gray) },
                     onValueChange = {
                         viewModel.dispatch(LoginAction.UpdateUserName(it))
                     },

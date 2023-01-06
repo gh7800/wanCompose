@@ -4,16 +4,16 @@ plugins {
     id "kotlin-kapt"
     id "kotlin-parcelize"
     id "dagger.hilt.android.plugin"
-    //id "androidx.navigation.safeargs.kotlin"
+    id "androidx.navigation.safeargs.kotlin"
 }
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "cn.shineiot.wancompose"
         minSdk 21
-        targetSdk 31
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -35,14 +35,14 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-        useIR = true
+//        useIR = true
     }
     buildFeatures {
         compose true
     }
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
-        kotlinCompilerVersion '1.5.21'
+        kotlinCompilerVersion coreKtx
     }
     packagingOptions {
         resources {
@@ -55,26 +55,47 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.3.2"
+    debugImplementation "androidx.compose.ui:ui-tooling:1.3.2"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:1.3.2"
 
-    implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
-    implementation 'androidx.activity:activity-compose:1.3.1'
+    implementation "androidx.core:core-ktx:$coreKtx"
+    implementation "androidx.appcompat:appcompat:$appcompat"
+    implementation "com.google.android.material:material:$material"
+    implementation "androidx.compose.material:material:$materialCompose"
+    implementation "androidx.compose.ui:ui:$composeUi"
+    implementation "androidx.compose.ui:ui-tooling-preview:$composeUi"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleRunTimeKtx"
+    implementation "androidx.activity:activity-compose:$activityCompose"
     implementation "androidx.constraintlayout:constraintlayout-compose:$constraintlayout_compose"
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
     //hilt inject framework
     implementation "com.google.dagger:hilt-android:$hiltVersion"
-    kapt "androidx.hilt:hilt-compiler:$hiltCompilerVersion"
-    //implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltComposeVersion"
     kapt "com.google.dagger:hilt-compiler:$hiltVersion"
+    implementation "androidx.hilt:hilt-navigation-compose:$navigationHilt"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltComposeVersion"
+    kapt "androidx.hilt:hilt-compiler:$hiltCompilerVersion"
+
+    //http request
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.google.code.gson:gson:$gsonVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor"
+
+    //数据保存，用于cookie持久化
+    implementation "androidx.datastore:datastore-preferences:$datastoreVersion"
+    implementation "androidx.datastore:datastore-core:$datastoreVersion"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.5.31"
+
+    //paging分页库
+    implementation "androidx.paging:paging-runtime:$pagingVersion"
+    testImplementation "androidx.paging:paging-common:$pagingVersion"
+    implementation "androidx.paging:paging-compose:$pagingComposeVersion"
+
+    //implementation "com.github.maning0303:MNProgressHUD:$MNProgressHUD"
+
+    //implementation 'com.github.gh7800:BaseKt:1.5.6'
 
 }
