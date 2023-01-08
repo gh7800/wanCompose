@@ -39,9 +39,7 @@ fun MainPage() {
                 .selectable(
                     selected = true,
                     onClick = {
-                        NavUtil
-                            .get()
-                            .navigation(RouteConfig.ROUTE_LOGIN)
+                        NavUtil.get().navigation(RouteConfig.ROUTE_LOGIN)
                     }
                 )
                 .constrainAs(txt) {
@@ -58,9 +56,8 @@ fun MainPage() {
                 .selectable(
                     selected = true,
                     onClick = {
-                        NavUtil
-                            .get()
-                            .navigation(RouteConfig.ROUTE_LOGIN)
+                        NavUtil.get().onBack()
+                        //NavUtil.get().navigation(RouteConfig.ROUTE_LOGIN)
                     }
                 )
                 .constrainAs(txt2) {

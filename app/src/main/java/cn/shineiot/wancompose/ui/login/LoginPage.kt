@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import cn.shineiot.wancompose.RouteConfig
 import cn.shineiot.wancompose.route.NavUtil
 import cn.shineiot.wancompose.ui.theme.*
@@ -33,13 +34,14 @@ import cn.shineiot.wancompose.utils.LogUtil
  */
 @Composable
 fun LoginPage(
-    navController: NavController,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val viewState: LoginState = viewModel.viewStates
     val scaffoldState: ScaffoldState = rememberScaffoldState()
 
+    /**生命周期函数，第一次调用compose时执行*/
     LaunchedEffect(Unit) {
+        LogUtil.e("LaunchedEffect")
         viewModel.viewEvents.collect {
             when (it) {
                 is LoginEvent.Loading -> {
@@ -57,23 +59,16 @@ fun LoginPage(
         }
     }
 
-    val callback = remember {
-        object : OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                navController.popBackStack()
-            }
-        }
-    }
-    val dispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-    /*DisposableEffect(key1 = Unit, effect = {
-        dispatcher?.addCallback(callback)
+    /**生命周期函数，页面退出是执行onDispose()函数*/
+    DisposableEffect(key1 = Unit, effect = {
         onDispose {
-            callback.remove()
+            LogUtil.e("DisposableEffect onDispose")
         }
-    })*/
+    })
 
-    BackHandler(enabled = true) {
-        LogUtil.e("backHandler")
+    /**compose每次执行都会调用此方法*/
+    SideEffect {
+        LogUtil.e("SideEffect")
     }
 
     Scaffold(
@@ -90,7 +85,7 @@ fun LoginPage(
                 },
                 navigationIcon = {
                     IconButton(onClick = {
-                        navController.popBackStack()
+                        NavUtil.get().onBack()
                     }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "", tint = Color.Black)
                     }
@@ -135,8 +130,8 @@ fun LoginPage(
 
                 Button(
                     onClick = {
-                        viewModel.dispatch(LoginAction.Login)
-
+                        //viewModel.dispatch(LoginAction.Login)
+                        NavUtil.get().navigation(RouteConfig.ROUTE_MAIN)
                     },
                     Modifier.padding(top = dp20)
                 ) {

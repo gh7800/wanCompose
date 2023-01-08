@@ -46,15 +46,17 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun NavContent(){
+fun NavContent() {
     val navController = rememberNavController()
 
     //初始化工具类
     NavUtil.get().init(navController)
 
-    NavHost(navController = navController, startDestination = ROUTE_LOGIN){
-        composableX(ROUTE_LOGIN){ LoginPage(navController) }
-        composableX(ROUTE_MAIN){ MainPage() }
+    NavHost(navController = navController, startDestination = ROUTE_LOGIN) {
+        composableX(ROUTE_LOGIN) {
+            LoginPage()
+        }
+        composableX(ROUTE_MAIN) { MainPage() }
 
     }
 }
@@ -68,9 +70,6 @@ object RouteConfig {
 }
 
 
-
-
-
 /**
  *
  * --------------------------------------------------------------------------------------------------------------------------------------------
@@ -79,17 +78,23 @@ object RouteConfig {
 @Composable
 fun SetTopAppBar() {
     TopAppBar(
-        title = { Text(text = "这是标题123", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(1f) )},
+        title = {
+            Text(
+                text = "这是标题123",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(1f)
+            )
+        },
         navigationIcon = {
             IconButton(onClick = {}) {
                 Icon(Icons.Filled.ArrowBack, contentDescription = "", tint = Color.White)
             }
         },
         actions = {
-            IconButton(onClick = {  }) {
+            IconButton(onClick = { }) {
                 Icon(Icons.Filled.Share, contentDescription = "分享")
             }
-            IconButton(onClick = {  }) {
+            IconButton(onClick = { }) {
                 Icon(Icons.Filled.Settings, contentDescription = "设置")
             }
         }

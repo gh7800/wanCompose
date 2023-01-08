@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.*
 import androidx.navigation.compose.ComposeNavigator
+import cn.shineiot.wancompose.RouteConfig
 import cn.shineiot.wancompose.utils.LogUtil
 
 /**
@@ -38,7 +39,7 @@ const val NavUtilTAG = "NavUtilTAG"
 
 class NavUtil private constructor() {
 
-    lateinit var navHostController: NavHostController
+    private lateinit var navHostController: NavHostController
     private var baseRouteInfo = HashMap<String, List<NavParam>>()
 
     companion object {
@@ -117,7 +118,19 @@ class NavUtil private constructor() {
         }
         Log.e(NavUtilTAG, "转换后的路由:${newRoute}")
         try {
-            navHostController.navigate(newRoute.toString())
+            val routeName = newRoute.toString()
+            navHostController.navigate(routeName) {
+                if (routeName == RouteConfig.ROUTE_LOGIN) {
+                    //清空之前的页面
+                    popUpTo(RouteConfig.ROUTE_LOGIN) {
+                        inclusive = true
+                    }
+                } else if (routeName == RouteConfig.ROUTE_MAIN) {
+                    popUpTo(RouteConfig.ROUTE_LOGIN) {
+                        inclusive = true
+                    }
+                }
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             Log.e(NavUtilTAG, "navigate error:${e.toString()}")
@@ -169,9 +182,16 @@ class NavUtil private constructor() {
     }
 
     //出栈
-    fun onBack(){
+    fun onBack() {
         val result = navHostController.popBackStack()
-        LogUtil.e(result)
+        if (!result) {
+            val navBackStackEntry = navHostController.getBackStackEntry(RouteConfig.ROUTE_LOGIN)
+
+        }
+    }
+
+    fun a() {
+        navHostController.popBackStack()
     }
 }
 
