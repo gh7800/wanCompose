@@ -1,6 +1,7 @@
 package cn.shineiot.wancompose.net
 
 import android.text.TextUtils
+import cn.shineiot.wancompose.IApp
 import cn.shineiot.wancompose.utils.LogUtil
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -32,7 +33,7 @@ object RetrofitClient {
     //httpLog
     private fun logInterceptor(): HttpLoggingInterceptor {
         val httpLogInterceptor = HttpLoggingInterceptor {
-            LogUtil.e(it)
+            LogUtil.printJson(it)
         }
         httpLogInterceptor.level = HttpLoggingInterceptor.Level.BODY
         return httpLogInterceptor
@@ -56,6 +57,8 @@ object RetrofitClient {
     }
 
     private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(AddCookiesInterceptor(IApp.CONTEXT))
+        .addInterceptor(SaveCookiesInterceptor(IApp.CONTEXT))
         .addInterceptor(logInterceptor())
         .addInterceptor(headerInterceptor)
         .addInterceptor(retryConnectInterceptor)

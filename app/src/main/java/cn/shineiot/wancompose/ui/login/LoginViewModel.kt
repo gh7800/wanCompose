@@ -3,6 +3,7 @@ package cn.shineiot.wancompose.ui.login
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cn.shineiot.wancompose.bean.User
 import cn.shineiot.wancompose.net.RetrofitClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -24,20 +25,13 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     private val loginChannel = Channel<LoginEvent>(Channel.UNLIMITED)
     val viewEvents = loginChannel.receiveAsFlow()
 
+    //修改状态
     fun dispatch(action: LoginAction) {
         when (action) {
             is LoginAction.Login -> login()
-            is LoginAction.UpdateUserName -> updateUserName(action.username)
-            is LoginAction.UpdatePassWord -> updatePassWord(action.password)
+            is LoginAction.UpdateUserName ->  viewStates = viewStates.copy(username = action.username)
+            is LoginAction.UpdatePassWord -> viewStates = viewStates.copy(password = action.password)
         }
-    }
-
-    private fun updateUserName(username: String) {
-        viewStates = viewStates.copy(username = username)
-    }
-
-    private fun updatePassWord(password: String) {
-        viewStates = viewStates.copy(password = password)
     }
 
     //登录请求
@@ -56,7 +50,7 @@ class LoginViewModel @Inject constructor() : ViewModel() {
                             emit(result)
                         }.map {
                             if (it.errorCode == 0) {
-                                loginChannel.send(LoginEvent.Success)
+                                loginChannel.send(LoginEvent.Success(it.data))
                             } else {
                                 throw Exception(it.errorMsg)
                             }
@@ -86,7 +80,7 @@ data class LoginState(
  */
 sealed class LoginEvent() {
     object Loading : LoginEvent()
-    object Success : LoginEvent()
+    data class Success(var user: User) : LoginEvent()
     data class Error(var msg: String?) : LoginEvent()
 }
 

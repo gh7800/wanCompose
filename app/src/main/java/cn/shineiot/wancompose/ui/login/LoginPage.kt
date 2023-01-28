@@ -51,7 +51,9 @@ fun LoginPage(
                     it.msg?.let { it1 -> scaffoldState.snackbarHostState.showSnackbar(message = it1) }
                 }
                 is LoginEvent.Success -> {
-                    scaffoldState.snackbarHostState.showSnackbar("success")
+                    LogUtil.e("user ${it.user}")
+
+                    scaffoldState.snackbarHostState.showSnackbar("success", duration = SnackbarDuration.Short)
 
                     NavUtil.get().navigation(RouteConfig.ROUTE_MAIN)
                 }
@@ -130,8 +132,7 @@ fun LoginPage(
 
                 Button(
                     onClick = {
-                        //viewModel.dispatch(LoginAction.Login)
-                        NavUtil.get().navigation(RouteConfig.ROUTE_MAIN)
+                        viewModel.dispatch(LoginAction.Login)
                     },
                     Modifier.padding(top = dp20)
                 ) {
