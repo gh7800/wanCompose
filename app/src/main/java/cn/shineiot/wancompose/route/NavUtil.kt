@@ -39,7 +39,7 @@ const val NavUtilTAG = "NavUtilTAG"
 
 class NavUtil private constructor() {
 
-    private lateinit var navHostController: NavHostController
+    lateinit var navHostController: NavHostController
     private var baseRouteInfo = HashMap<String, List<NavParam>>()
 
     companion object {

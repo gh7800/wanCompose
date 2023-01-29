@@ -69,9 +69,12 @@ object LogUtil {
         printLine(tag, true)
         message = "HTTP Header$LINE_SEPARATOR$message"
         val lines = message.split(LINE_SEPARATOR).toTypedArray()
+        val stringBuffer = StringBuffer()
         for (line in lines) {
-            Log.e(HTTP, "║ $line")
+            //Log.e(HTTP, "║ $line")
+            stringBuffer.append("$line \n")
         }
+        Log.e(HTTP, stringBuffer.toString())
         printLine(HTTP, false)
     }
 }

@@ -24,13 +24,17 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import cn.shineiot.wancompose.RouteConfig.ROUTE_HOME
 import cn.shineiot.wancompose.RouteConfig.ROUTE_LOGIN
 import cn.shineiot.wancompose.RouteConfig.ROUTE_MAIN
+import cn.shineiot.wancompose.RouteConfig.ROUTE_PROFILE
 import cn.shineiot.wancompose.bean.Message
 import cn.shineiot.wancompose.route.NavUtil
 import cn.shineiot.wancompose.route.composableX
 import cn.shineiot.wancompose.ui.login.LoginPage
 import cn.shineiot.wancompose.ui.main.MainPage
+import cn.shineiot.wancompose.ui.main.home.HomePage
+import cn.shineiot.wancompose.ui.main.profile.ProfilePage
 import cn.shineiot.wancompose.ui.theme.WanComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,23 +44,24 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
             NavContent()
         }
     }
 }
 
 @Composable
-fun NavContent() {
+fun NavContent(route : String = RouteConfig.ROUTE_LOGIN) {
     val navController = rememberNavController()
 
     //初始化工具类
     NavUtil.get().init(navController)
 
-    NavHost(navController = navController, startDestination = ROUTE_LOGIN) {
-        composableX(ROUTE_LOGIN) {
-            LoginPage()
-        }
-        composableX(ROUTE_MAIN) { MainPage() }
+    NavHost(navController = navController, startDestination = route) {
+        composableX(ROUTE_LOGIN) { LoginPage() }
+        composableX(ROUTE_MAIN) { MainPage(navController) }
+        composableX(ROUTE_HOME) { HomePage() }
+        composableX(ROUTE_PROFILE) { ProfilePage() }
 
     }
 }
@@ -66,7 +71,10 @@ fun NavContent() {
  */
 object RouteConfig {
     const val ROUTE_LOGIN = "login"
-    const val ROUTE_MAIN = "main"
+    const val ROUTE_MAIN = "main"//主页
+
+    const val ROUTE_HOME = "home"//首页
+    const val ROUTE_PROFILE = "profile"//个人信息
 }
 
 

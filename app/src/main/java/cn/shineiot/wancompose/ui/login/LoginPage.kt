@@ -1,11 +1,6 @@
 package cn.shineiot.wancompose.ui.login
 
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.compose.BackHandler
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,8 +17,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import cn.shineiot.wancompose.RouteConfig
 import cn.shineiot.wancompose.route.NavUtil
 import cn.shineiot.wancompose.ui.theme.*
@@ -32,6 +25,7 @@ import cn.shineiot.wancompose.utils.LogUtil
 /**
  * login
  */
+@Preview
 @Composable
 fun LoginPage(
     viewModel: LoginViewModel = hiltViewModel()
