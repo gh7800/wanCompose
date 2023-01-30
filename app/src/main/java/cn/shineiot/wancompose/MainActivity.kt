@@ -44,7 +44,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
             NavContent()
         }
     }
@@ -59,7 +58,7 @@ fun NavContent(route : String = RouteConfig.ROUTE_LOGIN) {
 
     NavHost(navController = navController, startDestination = route) {
         composableX(ROUTE_LOGIN) { LoginPage() }
-        composableX(ROUTE_MAIN) { MainPage(navController) }
+        composableX(ROUTE_MAIN) { MainPage() }
         composableX(ROUTE_HOME) { HomePage() }
         composableX(ROUTE_PROFILE) { ProfilePage() }
 

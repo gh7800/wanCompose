@@ -48,14 +48,6 @@ fun MainPage(
                         selected = currentDestination?.hierarchy?.any{ it.route == bottomNavPages[checkIndex]} == true,
                         onClick = {
                             checkIndex = index
-                            val route = bottomNavPages[checkIndex]
-                            navController.navigate(route){
-                                popUpTo(navController.graph.findStartDestination().id){
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
                         },
                         label = { Text(text = content) },
                         icon = {
@@ -74,13 +66,7 @@ fun MainPage(
             }
         },
         content = {
-            NavContent(RouteConfig.ROUTE_HOME)
-            /*NavHost(navController = navController, startDestination = RouteConfig.ROUTE_HOME, builder = {
-                composable(RouteConfig.ROUTE_HOME) { HomePage() }
-                composable(RouteConfig.ROUTE_PROFILE){ ProfilePage() }
-                composable(RouteConfig.ROUTE_HOME) { HomePage() }
-                composable(RouteConfig.ROUTE_PROFILE){ ProfilePage() }
-            })*/
+            NavContent(bottomNavPages[checkIndex])
         }
     )
 //    {
