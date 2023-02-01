@@ -126,7 +126,7 @@ class NavUtil private constructor() {
                         inclusive = true
                     }
                 } else if (routeName == RouteConfig.ROUTE_MAIN) {
-                    popUpTo(RouteConfig.ROUTE_LOGIN) {
+                    popUpTo(RouteConfig.ROUTE_MAIN) {
                         inclusive = true
                     }
                 }

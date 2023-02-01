@@ -53,7 +53,7 @@ object LogUtil {
     }
 
     fun printJson(msg: String) {
-        var message: String = try {
+        val message: String = try {
             if (msg.startsWith("{")) {
                 val jsonObject = JSONObject(msg)
                 jsonObject.toString(4) //最重要的方法，就一行，返回格式化的json字符串，其中的数字4是缩进字符数
@@ -66,15 +66,17 @@ object LogUtil {
         } catch (e: JSONException) {
             msg
         }
-        printLine(tag, true)
-        message = "HTTP Header$LINE_SEPARATOR$message"
+        //printLine(tag, true)
+        //message = "HTTP Header$LINE_SEPARATOR$message"
         val lines = message.split(LINE_SEPARATOR).toTypedArray()
-        val stringBuffer = StringBuffer()
+
+        val stringBuilder = java.lang.StringBuilder()
         for (line in lines) {
             //Log.e(HTTP, "║ $line")
-            stringBuffer.append("$line \n")
+            stringBuilder.append("$line \n")
         }
-        Log.e(HTTP, stringBuffer.toString())
-        printLine(HTTP, false)
+        Log.e(HTTP, stringBuilder.toString())
+
+        //printLine(HTTP, false)
     }
 }

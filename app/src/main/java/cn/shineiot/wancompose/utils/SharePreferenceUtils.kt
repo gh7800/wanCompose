@@ -91,4 +91,10 @@ class SharePreferenceUtils {
     fun remove(key: String) {
         instance.edit().remove(key).apply()
     }
+
+    fun printKey(){
+        for(map in instance.all){
+            LogUtil.e("${map.key} ${map.value}")
+        }
+    }
 }

@@ -28,11 +28,13 @@ import cn.shineiot.wancompose.RouteConfig.ROUTE_HOME
 import cn.shineiot.wancompose.RouteConfig.ROUTE_LOGIN
 import cn.shineiot.wancompose.RouteConfig.ROUTE_MAIN
 import cn.shineiot.wancompose.RouteConfig.ROUTE_PROFILE
+import cn.shineiot.wancompose.RouteConfig.ROUTE_SPLASH
 import cn.shineiot.wancompose.bean.Message
 import cn.shineiot.wancompose.route.NavUtil
 import cn.shineiot.wancompose.route.composableX
 import cn.shineiot.wancompose.ui.login.LoginPage
 import cn.shineiot.wancompose.ui.main.MainPage
+import cn.shineiot.wancompose.ui.main.SplashPage
 import cn.shineiot.wancompose.ui.main.home.HomePage
 import cn.shineiot.wancompose.ui.main.profile.ProfilePage
 import cn.shineiot.wancompose.ui.theme.WanComposeTheme
@@ -50,13 +52,14 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun NavContent(route : String = RouteConfig.ROUTE_LOGIN) {
+fun NavContent(route : String = ROUTE_SPLASH) {
     val navController = rememberNavController()
 
     //初始化工具类
     NavUtil.get().init(navController)
 
     NavHost(navController = navController, startDestination = route) {
+        composableX(ROUTE_SPLASH) { SplashPage() }
         composableX(ROUTE_LOGIN) { LoginPage() }
         composableX(ROUTE_MAIN) { MainPage() }
         composableX(ROUTE_HOME) { HomePage() }
@@ -69,6 +72,7 @@ fun NavContent(route : String = RouteConfig.ROUTE_LOGIN) {
  * pages
  */
 object RouteConfig {
+    const val ROUTE_SPLASH = "splash"
     const val ROUTE_LOGIN = "login"
     const val ROUTE_MAIN = "main"//主页
 
