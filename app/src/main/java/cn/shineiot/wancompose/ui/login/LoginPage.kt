@@ -102,7 +102,7 @@ fun LoginPage(
                     value = viewState.username,
                     placeholder = { Text(text = "请输入用户名..", color = Color.Gray) },
                     onValueChange = {
-                        viewModel.dispatch(LoginAction.UpdateUserName(it))
+                        viewModel.dispatch(LoginIntent.UpdateUserName(it))
                     },
                     label = { Text(text = "请输入用户名") },
                     singleLine = true
@@ -111,7 +111,7 @@ fun LoginPage(
                 OutlinedTextField(
                     value = viewState.password,
                     onValueChange = {
-                        viewModel.dispatch(LoginAction.UpdatePassWord(it))
+                        viewModel.dispatch(LoginIntent.UpdatePassWord(it))
                     },
                     modifier = Modifier.padding(top = dp10),
                     placeholder = { Text(text = "请输入密码..") },
@@ -126,7 +126,7 @@ fun LoginPage(
 
                 Button(
                     onClick = {
-                        viewModel.dispatch(LoginAction.Login)
+                        viewModel.dispatch(LoginIntent.Login)
                     },
                     Modifier.padding(top = dp20)
                 ) {

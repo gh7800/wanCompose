@@ -26,11 +26,11 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     val viewEvents = loginChannel.receiveAsFlow()
 
     //修改状态
-    fun dispatch(action: LoginAction) {
+    fun dispatch(action: LoginIntent) {
         when (action) {
-            is LoginAction.Login -> login()
-            is LoginAction.UpdateUserName ->  viewStates = viewStates.copy(username = action.username)
-            is LoginAction.UpdatePassWord -> viewStates = viewStates.copy(password = action.password)
+            is LoginIntent.Login -> login()
+            is LoginIntent.UpdateUserName ->  viewStates = viewStates.copy(username = action.username)
+            is LoginIntent.UpdatePassWord -> viewStates = viewStates.copy(password = action.password)
         }
     }
 
@@ -87,8 +87,8 @@ sealed class LoginEvent() {
 /**
  * View意图
  */
-sealed class LoginAction {
-    object Login : LoginAction()
-    data class UpdateUserName(val username: String) : LoginAction()
-    data class UpdatePassWord(val password: String) : LoginAction()
+sealed class LoginIntent {
+    object Login : LoginIntent()
+    data class UpdateUserName(val username: String) : LoginIntent()
+    data class UpdatePassWord(val password: String) : LoginIntent()
 }
