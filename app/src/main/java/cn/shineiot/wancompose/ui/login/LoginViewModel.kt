@@ -1,6 +1,5 @@
 package cn.shineiot.wancompose.ui.login
 
-import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cn.shineiot.wancompose.bean.User
@@ -18,8 +17,9 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class LoginViewModel @Inject constructor() : ViewModel() {
-    var viewStates by mutableStateOf(LoginState())
-        private set
+    private val _states = MutableStateFlow(LoginState())
+    var viewStates : StateFlow<LoginState> = _states.asStateFlow()
+        private set //只能在ViewModel内部修改状态
 
     //channel 信道
     private val loginChannel = Channel<LoginEvent>(Channel.UNLIMITED)
@@ -29,8 +29,8 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     fun dispatch(action: LoginIntent) {
         when (action) {
             is LoginIntent.Login -> login()
-            is LoginIntent.UpdateUserName ->  viewStates = viewStates.copy(username = action.username)
-            is LoginIntent.UpdatePassWord -> viewStates = viewStates.copy(password = action.password)
+            is LoginIntent.UpdateUserName -> _states.update { it.copy(username = action.username) }
+            is LoginIntent.UpdatePassWord -> _states.update { it.copy(password = action.password) }
         }
     }
 
@@ -38,31 +38,31 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     private fun login() {
         viewModelScope.launch {
             when {
-                viewStates.username.isEmpty() -> loginChannel.send(LoginEvent.Error("请输入账号"))
-                viewStates.password.isEmpty() -> loginChannel.send(LoginEvent.Error("请输入密码"))
+                _states.value.username.isEmpty() -> loginChannel.send(LoginEvent.Error("请输入账号"))
+                _states.value.password.isEmpty() -> loginChannel.send(LoginEvent.Error("请输入密码"))
                 else -> {
-                    viewModelScope.launch {
-                        flow {
-                            val result = RetrofitClient.httpService.login(
-                                viewStates.username,
-                                viewStates.password
-                            )
-                            emit(result)
-                        }.map {
-                            if (it.errorCode == 0) {
-                                loginChannel.send(LoginEvent.Success(it.data))
-                            } else {
-                                throw Exception(it.errorMsg)
-                            }
-                        }.catch {
-                            loginChannel.send(LoginEvent.Error(it.message))
-                        }.collect()
+                    loginChannel.send(LoginEvent.Loading)
+                    flow {
+                        val result = RetrofitClient.httpService.login(
+                            _states.value.username,
+                            _states.value.password
+                        ).apiData()
+                        emit(result)
+                    }.map {
+                        loginChannel.send(LoginEvent.Success(it))
+                    }.catch {
+                        loginChannel.send(LoginEvent.Error(it.message))
+                    }.collect()
 
-                    }
                 }
             }
 
         }
+    }
+
+    override fun onCleared() {
+        loginChannel.cancel() //取消通道，防止内存泄露
+        super.onCleared()
     }
 
 }
@@ -76,19 +76,19 @@ data class LoginState(
 )
 
 /**
- * 一次性事件
- */
-sealed class LoginEvent() {
-    object Loading : LoginEvent()
-    data class Success(var user: User) : LoginEvent()
-    data class Error(var msg: String?) : LoginEvent()
-}
-
-/**
  * View意图
  */
 sealed class LoginIntent {
     object Login : LoginIntent()
     data class UpdateUserName(val username: String) : LoginIntent()
     data class UpdatePassWord(val password: String) : LoginIntent()
+}
+
+/**
+ * 一次性事件
+ */
+sealed class LoginEvent() {
+    object Loading : LoginEvent()
+    data class Success(var user: User) : LoginEvent()
+    data class Error(var msg: String?) : LoginEvent()
 }

@@ -7,13 +7,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,6 +21,7 @@ import cn.shineiot.wancompose.utils.RouteConfig
 import cn.shineiot.wancompose.route.NavUtil
 import cn.shineiot.wancompose.ui.theme.*
 import cn.shineiot.wancompose.utils.LogUtil
+import cn.shineiot.wancompose.utils.ToastUtil
 
 /**
  * login
@@ -30,10 +31,10 @@ import cn.shineiot.wancompose.utils.LogUtil
 fun LoginPage(
     viewModel: LoginViewModel = hiltViewModel()
 ) {
-    val viewState: LoginState = viewModel.viewStates
+    val viewState by viewModel.viewStates.collectAsState()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
 
-    /**生命周期函数，第一次调用compose时执行*/
+    //生命周期函数，第一次调用compose时执行
     LaunchedEffect(Unit) {
         LogUtil.e("LaunchedEffect")
         viewModel.viewEvents.collect {
@@ -47,22 +48,23 @@ fun LoginPage(
                 is LoginEvent.Success -> {
                     LogUtil.e("user ${it.user}")
 
-                    scaffoldState.snackbarHostState.showSnackbar("success", duration = SnackbarDuration.Short)
+                    //scaffoldState.snackbarHostState.showSnackbar("success", duration = SnackbarDuration.Short)
 
+                    ToastUtil.show("登录成功")
                     NavUtil.get().navigation(RouteConfig.ROUTE_MAIN)
                 }
             }
         }
     }
 
-    /**生命周期函数，页面退出是执行onDispose()函数*/
+    //生命周期函数，页面退出是执行onDispose()函数
     DisposableEffect(key1 = Unit, effect = {
         onDispose {
             LogUtil.e("DisposableEffect onDispose")
         }
     })
 
-    /**compose每次执行都会调用此方法*/
+    //每次刷新都会调用此方法
     SideEffect {
         LogUtil.e("SideEffect")
     }
@@ -105,7 +107,8 @@ fun LoginPage(
                         viewModel.dispatch(LoginIntent.UpdateUserName(it))
                     },
                     label = { Text(text = "请输入用户名") },
-                    singleLine = true
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                 )
 
                 OutlinedTextField(
@@ -118,17 +121,17 @@ fun LoginPage(
                     label = { Text(text = "请输入密码") },
                     singleLine = true,
                     keyboardActions = KeyboardActions(onDone = {
-                        NavUtil.get().navigation(RouteConfig.ROUTE_MAIN)
+                        viewModel.dispatch(LoginIntent.Login)
                     }),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),//输入类型
-
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done,keyboardType = KeyboardType.Password),//输入类型
+                    visualTransformation = PasswordVisualTransformation()
                 )
 
                 Button(
                     onClick = {
                         viewModel.dispatch(LoginIntent.Login)
                     },
-                    Modifier.padding(top = dp20)
+                    Modifier.padding(top = dp20),
                 ) {
                     Text(
                         text = "登录",
@@ -141,32 +144,6 @@ fun LoginPage(
             }
         }
     )
-
-    @Composable
-    fun SetTopAppBar() {
-        TopAppBar(
-            title = {
-                Text(
-                    text = "这是标题123",
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth(1f)
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = {}) {
-                    Icon(Icons.Filled.ArrowBack, contentDescription = "", tint = Color.White)
-                }
-            },
-            actions = {
-                IconButton(onClick = { }) {
-                    Icon(Icons.Filled.Share, contentDescription = "分享")
-                }
-                IconButton(onClick = { }) {
-                    Icon(Icons.Filled.Settings, contentDescription = "设置")
-                }
-            }
-        )
-    }
 
 }
 

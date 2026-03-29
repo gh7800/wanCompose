@@ -48,6 +48,7 @@ fun SplashPage() {
         val cookie = SharePreferenceUtils.default.contains("www.wanandroid.com")
 
         if (cookie) {
+            NavUtil.get().navigation(RouteConfig.ROUTE_MAIN)
         } else {
             NavUtil.get().navigation(RouteConfig.ROUTE_LOGIN)
         }
@@ -59,7 +60,6 @@ fun SplashPage() {
                 .background(color = F2)
                 .fillMaxSize(1f)
         ) {
-            val img = createRef()
             val (image, text) = createRefs()
             Image(
                 painter = painterResource(id = R.drawable.huojiang),

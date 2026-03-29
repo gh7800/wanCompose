@@ -66,10 +66,10 @@ fun NavContent(route : String = ROUTE_SPLASH) {
 
     }
 }
-
-/**
+/*
+*//**
  * TopAppBar
- */
+ *//*
 @Composable
 fun SetTopAppBar() {
     TopAppBar(
@@ -108,9 +108,9 @@ fun Greeting(msg: Message) {
     WanComposeTheme() {
         Surface(modifier = Modifier.fillMaxSize()) {
             Column {
-                /*var name = remember {
+                *//*var name = remember {
                     mutableListOf<String>()
-                }*/
+                }*//*
                 SetTopAppBar()
 
                 Row(modifier = Modifier.padding(5.dp)) {
@@ -153,7 +153,7 @@ fun Greeting(msg: Message) {
             }
         }
     }
-}
+}*/
 
 
 

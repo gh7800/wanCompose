@@ -12,7 +12,7 @@ import retrofit2.http.POST
  */
 interface HttpService {
     companion object{
-        private const val BaseUrl : String = "https://www.wanandroid.com/"
+        private const val BaseUrl : String = "http://xcoa.hwapp.site/" //"https://www.wanandroid.com/"
 
         fun getBaseUrl() : String{
             return BaseUrl
@@ -20,6 +20,6 @@ interface HttpService {
     }
 
     @FormUrlEncoded
-    @POST("user/login")
+    @POST("auth/login")
     suspend fun login(@Field("username")username : String,@Field("password")password : String) : BaseResult<User>
 }

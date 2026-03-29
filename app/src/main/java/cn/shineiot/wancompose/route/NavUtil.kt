@@ -6,34 +6,6 @@ import androidx.navigation.*
 import androidx.navigation.compose.ComposeNavigator
 import cn.shineiot.wancompose.utils.RouteConfig
 
-/**
- * author:Xcy
- * date:2022/5/7 22
- * description: 跳转工具类
- *
- * 使用方法:(声明)
- *     val navHostController = rememberNavController()
- *
- *     NavUtil.get().init(navHostController = navHostController)
- *
- *     NavHost(navController = navHostController, startDestination = RouteConfig.MAIN_PAGE) {
- *         composableX(RouteConfig.MAIN_PAGE) { MainPage() }
- *         composableX(RouteConfig.FIRST_PAGE,
- *              params = listOf(
- *              NavParam("key1", isRequired = false, defaultValue = "default value"),
- *              NavParam("key2"))
- *         ) {
- *              FirstPage(it.arguments?.getString("key1"), it.arguments?.getString("key2"))
- *           }
- *        composableX(RouteConfig.SECOND_PAGE) { SecondPage() }
- *     }
- *
- *默认跳转: NavUtil.get().navigation(RouteConfig.SECOND_PAGE)
- *带参跳转: NavUtil.get().navigation(baseRoute, params = hashMapOf<String, String>().apply {
- *          put("key1", "hello key1")
- *          put("key2", "hello key2")
- *        }))
- **/
 const val NavUtilTAG = "NavUtilTAG"
 
 class NavUtil private constructor() {
