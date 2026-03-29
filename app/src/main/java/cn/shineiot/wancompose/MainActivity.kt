@@ -22,13 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import cn.shineiot.wancompose.RouteConfig.ROUTE_HOME
-import cn.shineiot.wancompose.RouteConfig.ROUTE_LOGIN
-import cn.shineiot.wancompose.RouteConfig.ROUTE_MAIN
-import cn.shineiot.wancompose.RouteConfig.ROUTE_PROFILE
-import cn.shineiot.wancompose.RouteConfig.ROUTE_SPLASH
 import cn.shineiot.wancompose.bean.Message
 import cn.shineiot.wancompose.route.NavUtil
 import cn.shineiot.wancompose.route.composableX
@@ -38,6 +32,11 @@ import cn.shineiot.wancompose.ui.main.SplashPage
 import cn.shineiot.wancompose.ui.main.home.HomePage
 import cn.shineiot.wancompose.ui.main.profile.ProfilePage
 import cn.shineiot.wancompose.ui.theme.WanComposeTheme
+import cn.shineiot.wancompose.utils.RouteConfig.ROUTE_HOME
+import cn.shineiot.wancompose.utils.RouteConfig.ROUTE_LOGIN
+import cn.shineiot.wancompose.utils.RouteConfig.ROUTE_MAIN
+import cn.shineiot.wancompose.utils.RouteConfig.ROUTE_PROFILE
+import cn.shineiot.wancompose.utils.RouteConfig.ROUTE_SPLASH
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -69,21 +68,6 @@ fun NavContent(route : String = ROUTE_SPLASH) {
 }
 
 /**
- * pages
- */
-object RouteConfig {
-    const val ROUTE_SPLASH = "splash"
-    const val ROUTE_LOGIN = "login"
-    const val ROUTE_MAIN = "main"//主页
-
-    const val ROUTE_HOME = "home"//首页
-    const val ROUTE_PROFILE = "profile"//个人信息
-}
-
-
-/**
- *
- * --------------------------------------------------------------------------------------------------------------------------------------------
  * TopAppBar
  */
 @Composable

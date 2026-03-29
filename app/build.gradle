@@ -11,7 +11,8 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "cn.shineiot.wancompose"
+        namespace "cn.shineiot.wancompose"
+        //applicationId "cn.shineiot.wancompose"
         minSdk 21
         targetSdk 33
         versionCode 1

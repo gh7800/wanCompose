@@ -3,7 +3,6 @@ package cn.shineiot.wancompose.ui.main
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -13,15 +12,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import cn.shineiot.wancompose.R
-import cn.shineiot.wancompose.RouteConfig
 import cn.shineiot.wancompose.route.NavUtil
 import cn.shineiot.wancompose.ui.theme.*
-import cn.shineiot.wancompose.utils.LogUtil
+import cn.shineiot.wancompose.utils.RouteConfig
 import cn.shineiot.wancompose.utils.SharePreferenceUtils
 import kotlinx.coroutines.delay
 import java.util.*
-import java.util.logging.Handler
-import kotlin.concurrent.fixedRateTimer
 
 /**
  * @Description
@@ -41,20 +37,20 @@ fun SplashPage() {
     val task = MyTimerTask()
 
     LaunchedEffect(key1 = Unit, block = {
-        //Timer().schedule(task, 2000L)
+        Timer().schedule(task, 2000L)
 
-        //SharePreferenceUtils.default.printKey()
+        SharePreferenceUtils.default.printKey()
 
         delay(1500L)//延迟1500毫秒
 
         NavUtil.get().navigation(RouteConfig.ROUTE_MAIN)
 
-        /*val cookie = SharePreferenceUtils.default.contains("www.wanandroid.com")
+        val cookie = SharePreferenceUtils.default.contains("www.wanandroid.com")
 
         if (cookie) {
         } else {
             NavUtil.get().navigation(RouteConfig.ROUTE_LOGIN)
-        }*/
+        }
     })
 
     Scaffold() {

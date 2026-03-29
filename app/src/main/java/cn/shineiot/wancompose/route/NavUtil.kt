@@ -4,8 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.*
 import androidx.navigation.compose.ComposeNavigator
-import cn.shineiot.wancompose.RouteConfig
-import cn.shineiot.wancompose.utils.LogUtil
+import cn.shineiot.wancompose.utils.RouteConfig
 
 /**
  * author:Xcy

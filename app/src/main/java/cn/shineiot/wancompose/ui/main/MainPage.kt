@@ -7,13 +7,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import cn.shineiot.wancompose.RouteConfig
+import cn.shineiot.wancompose.utils.RouteConfig
 import cn.shineiot.wancompose.ui.main.home.HomePage
 import cn.shineiot.wancompose.ui.main.profile.ProfilePage
 
