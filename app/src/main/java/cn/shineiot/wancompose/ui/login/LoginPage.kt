@@ -1,5 +1,6 @@
 package cn.shineiot.wancompose.ui.login
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -91,11 +92,12 @@ fun LoginPage(
                 backgroundColor = Color.White,
             )
         },
-        content = {
+        content = { contentPadding ->
             Column(
                 modifier = Modifier
                     .fillMaxSize(1f)
-                    .background(WRITE),
+                    .background(WRITE)
+                    .padding(contentPadding),
                 verticalArrangement = Arrangement.Center, //垂直居中
                 horizontalAlignment = Alignment.CenterHorizontally, //水平居中
             ) {

@@ -1,6 +1,7 @@
 package cn.shineiot.wancompose.route
 
 import android.util.Log
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.Composable
 import androidx.navigation.*
 import androidx.navigation.compose.ComposeNavigator
@@ -161,7 +162,7 @@ class NavUtil private constructor() {
         }
     }
 
-    fun a() {
+    fun printStack() {
         navHostController.popBackStack()
     }
 }
@@ -174,7 +175,7 @@ class NavUtil private constructor() {
 fun NavGraphBuilder.composableX(
     baseRoute: String,
     params: List<NavParam> = emptyList(),
-    content: @Composable (NavBackStackEntry) -> Unit
+    content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit
 ) {
     val newRoute = StringBuilder()
     var newParam = mutableListOf<NamedNavArgument>()

@@ -71,3 +71,6 @@ app/src/main/java/cn/shineiot/wancompose/
 
 ### Base URL
 - `HttpService.getBaseUrl()` provides the base URL — check `HttpService.kt` for the actual endpoint
+
+### 忽略
+- 不读取项目的build文件夹和app下的build文件夹和.git文件

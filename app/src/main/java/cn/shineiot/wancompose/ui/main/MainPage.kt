@@ -1,9 +1,13 @@
 package cn.shineiot.wancompose.ui.main
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -29,7 +33,7 @@ fun MainPage(
     val bottomNavPages = listOf(RouteConfig.ROUTE_HOME,RouteConfig.ROUTE_PROFILE)
 
     var checkIndex by remember {
-        mutableStateOf(0)
+        mutableIntStateOf(0)
     }
 
     Scaffold(
@@ -63,9 +67,6 @@ fun MainPage(
                                         saveState = true
                                     }
                                 }
-                                /*popUpTo(navController.graph.findStartDestination().id){
-                                    saveState = true
-                                }*/
                                 launchSingleTop = true
                                 restoreState = true
                             }
@@ -74,15 +75,18 @@ fun MainPage(
                     )
                 }
             }
-        },
-        content = {
-            //NavContent(bottomNavPages[checkIndex])
+        }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
             NavHost(navController = navController, startDestination = bottomNavPages[checkIndex]){
                 composable(RouteConfig.ROUTE_HOME){ HomePage()}
                 composable(RouteConfig.ROUTE_PROFILE){ ProfilePage() }
             }
         }
-    )
+    }
 
 }
-

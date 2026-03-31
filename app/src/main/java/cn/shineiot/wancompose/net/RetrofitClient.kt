@@ -57,8 +57,8 @@ object RetrofitClient {
     }
 
     private val okHttpClient = OkHttpClient.Builder()
-        .addInterceptor(AddCookiesInterceptor(IApp.CONTEXT))
-        .addInterceptor(SaveCookiesInterceptor(IApp.CONTEXT))
+        //.addInterceptor(AddCookiesInterceptor(IApp.CONTEXT))
+        //.addInterceptor(SaveCookiesInterceptor(IApp.CONTEXT))
         .addInterceptor(logInterceptor())
         .addInterceptor(headerInterceptor)
         .addInterceptor(retryConnectInterceptor)
